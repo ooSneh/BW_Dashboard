@@ -1,0 +1,337 @@
+import requests
+import time
+from datetime import datetime
+from bs4 import BeautifulSoup
+import pandas as pd
+import json
+import selenium as sl
+from selenium import webdriver
+import numpy as np
+from selenium.webdriver.common.by import By
+from io import StringIO
+
+old_price = []
+diff = []
+old_html = ""
+
+
+def main():
+    cookie_file = "cookies.env"
+    loggedout = False
+
+    while True:
+
+        if loggedout:
+            login(cookie_file)
+            loggedout = False
+
+        try:
+            cookies = get_cookies(cookie_file)
+
+            r = requests.get(
+                "https://www.bwh.autoclerkcloud.com/logon.do2", cookies=cookies
+            )
+            html_content = r.text
+            # with open("oldhtml.html", "r", encoding="utf-8") as f:
+            #     html_content = f.read()
+            global old_html
+            if old_html != html_content:  # Only update if change is detected
+                parsed_html, pass_on_dict = parse_html(html_content)
+
+                all_data_json = data_to_json(parsed_html)
+                all_data_json.append(pass_on_dict)
+
+                with open("data.json", "w") as f:
+                    json.dump(all_data_json, f, indent=4)
+
+                formatted_time = datetime.now().strftime("%H:%M:%S")
+                print("Last Updated " + formatted_time)
+                # Example output: 12:10:00
+                old_html = html_content
+
+            time.sleep(180)
+
+        except AttributeError as ae:
+            print(f"Error: {ae}")
+            print("Logged out, cookies expired. Cookies need to be updated")
+            loggedout = True
+
+        except json.decoder.JSONDecodeError as jd:
+            print(f"Error: {jd}")
+            print("Cookies.env file is empty or wrong format")
+            loggedout = True
+
+        except requests.exceptions.ConnectTimeout as ct:
+            print(f"Error: {ct}")
+            print("Too many request, Attempting to relog")
+            loggedout = True
+
+        except Exception as ex:
+            print(f"Error: {ex}")
+            print("New error, idk what this is yet.")
+            loggedout = True
+
+
+def login(cookie_file):
+    driver = webdriver.Chrome()
+    driver.get("https://www.bwh.autoclerkcloud.com/FrontDesk.do2")
+    time.sleep(2)
+
+    cookie_accept = driver.find_element(By.CLASS_NAME, "prominent-btn")
+    cookie_accept.click()
+    time.sleep(2)
+
+    user_field = driver.find_element(By.ID, "input28")
+    user_field.send_keys("7s54av")
+    time.sleep(2)
+
+    user_btn = driver.find_element(By.CLASS_NAME, "button-primary")
+    user_btn.click()
+    time.sleep(2)
+
+    pass_field = driver.find_element(By.ID, "input62")
+    pass_field.send_keys("Omsairam1!")
+    time.sleep(2)
+
+    pass_btn = driver.find_element(By.CLASS_NAME, "button-primary")
+    pass_btn.click()
+    time.sleep(5)
+
+    cookies_json = driver.get_cookies()
+    with open(cookie_file, "w") as outfile:
+        json.dump(cookies_json, outfile, indent=4)
+
+    driver.quit()
+
+
+def get_cookies(cookie_file):
+    with open(cookie_file, "r") as json_file:
+        cookies_dict = json.load(json_file)
+
+    cookies = {
+        cookies_dict[0]["name"]: cookies_dict[0]["value"],
+        cookies_dict[2]["name"]: cookies_dict[2]["value"],
+        cookies_dict[1]["name"]: cookies_dict[1]["value"],
+    }
+    return cookies
+
+
+def parse_html(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    for a in soup.find_all("a"):
+        a.unwrap()
+
+    for form in soup.find_all("form"):
+        form.decompose()
+
+    for button in soup.find_all("button"):
+        button.decompose()
+
+    summ_data = soup.find("div", "col-summary")
+    # if summ_data == None:
+    #     loggedout = True
+    for tr in summ_data.find_all("tr"):
+        tr["class"] = ["summary-card"]
+
+    avail_data = soup.find("div", "col-availability")
+    for tr in avail_data.find_all("tr"):
+        tr["class"] = ["avail-card"]
+
+    pass_data = soup.find("div", "col-pass-on-log")
+
+    groups_data = soup.find("div", "col-groups")
+    for tr in groups_data.find_all("tr"):
+        tr["class"] = ["group-card"]
+
+    header = "<!doctype html>\
+    <html>\
+    \
+    <head></head>\
+    <body>"
+
+    footer = "</body>\
+        </html>"
+
+    all_data_html = (
+        header
+        + str(summ_data)
+        + str(avail_data)
+        + str(groups_data)
+        + str(pass_data)
+        + footer
+    )
+
+    pass_on_dict = []
+
+    for i in range(len(pass_data.find_all("i"))):
+        pass_on_dict.append(
+            {
+                "title": pass_data.find_all("span", "col-title")[i].contents[0],
+                "timestamp": pass_data.find_all("i")[i]
+                .contents[0]
+                .replace("\n", "")
+                .replace("\t", "")
+                .replace("    ", " ")
+                .strip(),
+                "message": pass_data.find_all("span", "col-text-system-message")[
+                    i
+                ].contents[0],
+            }
+        )
+
+    return all_data_html, pass_on_dict
+
+
+def data_to_json(parsed_html):
+    extract_data = pd.read_html(StringIO(parsed_html))
+    all_data_json = []
+
+    extract_data = fix_avail_dataset(None, extract_data, True)
+
+    for i, df in enumerate(extract_data):
+
+        if i == 0:
+            # summary dataset
+            df.columns = ["value", "label"]
+            df = df[["label", "value"]]
+            df = df[:-2]
+
+        # availability dataset
+        elif i == 1:
+            df = fix_avail_dataset(df, None, False)
+            df.columns = ["count", "room", "price"]
+            df = match_room_price(df)
+            df = save_old_price(df)
+
+        elif i == 2:
+            # group dataset (header row issue)
+            df.columns = df.iloc[0]  # set first row as header
+            df = df[1:]  # remove header row
+
+        all_data_json.append(df.to_dict(orient="records"))
+
+    return all_data_json
+
+
+def format_currency(amount):
+    """Formats a float as a currency string (e.g., -$1,234.56)."""
+    # Format the absolute value with commas and two decimal places
+    formatted_amount = f"${abs(amount):,.2f}"
+    # Prepend a minus sign if the original amount was negative
+    if amount < 0:
+        return f"-{formatted_amount}"
+    return formatted_amount
+
+
+# Makes sure the avail dataset always has 4 rows and will add default values if rows are missing
+def fix_avail_dataset(df, extract_data, stepOne):
+    avail_dummy = [
+        {0: 0, 1: "KNS", 2: "$ 0.00"},
+        {0: 0, 1: "QQNS", 2: "$ 0.00"},
+        {0: 0, 1: "KHC", 2: "$ 0.00"},
+        {0: 0, 1: "QQHC", 2: "$ 0.00"},
+    ]
+    if stepOne:
+        if len(extract_data[1].columns) != 3:
+            extract_data.insert(1, pd.DataFrame(avail_dummy))
+
+        return extract_data
+
+    avail_dict = df.to_dict(orient="records")
+    for i, d in enumerate(avail_dummy):
+        if len(avail_dict) <= i:
+            avail_dict = avail_dict + avail_dummy[i:]
+            # print("reached!")
+            break
+        elif len(avail_dict) == 4:
+            break
+        # print(len(avail_dict), i)
+        # print(d[1], avail_dict[k][1])
+        if avail_dict[i][1] != d[1]:
+            avail_dict.insert(i, d)
+    # print("old df:", df)
+    df = pd.DataFrame(avail_dict)
+    # print("new df:", df)
+    return df
+
+
+# Saves the previous price for rooms and calulcates the difference.
+# Also adds 2 new columns for old price and difference in price to the dataset
+def save_old_price(df):
+    global old_price
+    global diff
+
+    if old_price == []:
+        old_price = df["price"].tolist()
+        diff = [
+            format_currency(float(p[2:]) - float(old_price[j][2:]))
+            for j, p in enumerate(df["price"].tolist())
+        ]
+        df["old price"] = old_price
+
+    elif old_price != df["price"].tolist():
+        # print("new price", df["price"].tolist())
+        # print("old_price", old_price)
+        # print("displayed_old_price1", displayed_old_price)
+        # temp_list = df["price"].tolist()
+        df["old price"] = old_price
+        for i, newPrice in enumerate(df["price"].tolist()):
+            newPriceFloat = float(newPrice[2:])
+            old_priceFloat = float(old_price[i][2:])
+            if newPriceFloat == 0:
+                pass
+                # temp_list[i] = old_price[i]
+                # print("newPrice", newPrice)
+                # print(df["price"].tolist()[i])
+            elif newPriceFloat != old_priceFloat:
+                # print(old_priceFloat, newPriceFloat, i)
+                if old_priceFloat != 0:
+                    diff[i] = format_currency(newPriceFloat - old_priceFloat)
+                old_price[i] = newPrice
+            else:
+                old_price[i] = newPrice
+
+        # df["price"] = temp_list
+    else:
+        df["old price"] = old_price
+
+    df["diff"] = diff
+    # print("displayed_old_price2", displayed_old_price)
+
+    return df
+
+
+def match_room_price(df):
+    
+    global old_price
+
+    curr_count = df["count"].tolist()
+    curr_price = df["price"].tolist()
+    
+    pair_map = {0: 2, 2: 0, 1: 3, 3: 1}
+
+    for i in range(len(curr_count)):
+        getPairIndex = pair_map.get(i)
+        if curr_count[i] == 0 and curr_count[getPairIndex] == 0 and old_price:
+            curr_price[i] = old_price[i]
+            curr_price[getPairIndex] = old_price[getPairIndex]
+        elif curr_count[i] == 0:
+            curr_price[i] = curr_price[getPairIndex]
+        # if (float(curr_old[i][2:]) != float(curr_old[getPairIndex][2:])) and float(
+        #     curr_price[i][2:]
+        # ) == 0:
+        #     curr_price[i] = curr_price[getPairIndex]
+        #     curr_diff[i] = curr_diff[getPairIndex]
+        #     curr_old[i] = curr_old[getPairIndex]
+        # # elif float(curr_price[i][2:]) == float(curr_price[getPairIndex][2:]):    
+        # elif float(curr_price[i][2:]) == 0 and float(curr_price[getPairIndex][2:]) == 0:
+        #     curr_price[i] = old_price[i]
+        #     curr_price[getPairIndex] = old_price[getPairIndex]
+
+        df["price"] = curr_price    
+    return df
+
+
+if __name__ == "__main__":
+    main()

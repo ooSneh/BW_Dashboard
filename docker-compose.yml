@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  scraper:
+    build: ./backend
+    container_name: dashboard-scraper
+    volumes:
+      - ./public:/app/public
+      - ./secrets:/app/secrets
+    restart: unless-stopped

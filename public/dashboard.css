@@ -1,0 +1,47 @@
+/* ---------- GLOBAL (DARK MODE FOR DISTANCE VIEWING) ---------- */
+
+body {
+  background: #121212;
+  color: #ffffff;
+}
+
+/* ---------- CARPLAY-STYLE CARDS ---------- */
+
+.soft-card{
+  background: #1e1e1e;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.soft-row {
+  background: #1e1e1e;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+/* ---------- TEXT HIERARCHY (DISTANCE OPTIMIZED) ---------- */
+
+/* PRIMARY NUMBERS (MOST IMPORTANT) */
+.text-big {
+  font-size: 5vh;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+/* LABELS (SECONDARY INFO) */
+.text-med {
+  font-size: 2.5vh;
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+/* SMALL TEXT (TABLES / LOGS) */
+.text-small {
+  font-size: 2vh;
+  color: #b0b0b0;
+}
+
+[hidden] {
+    display: none !important;
+}

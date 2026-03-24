@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- <meta http-equiv="refresh" content="10"> Refreshes every 10 seconds -->
+</head>
+
+<body>
+    <script src="script.js"></script>
+    <div class="container-fluid vh-100 d-flex flex-column p-1 gap-1">
+
+        <!-- TOP ROW -->
+        <div class="row g-2">
+
+            <!-- SUMMARY -->
+            <div class="col-7 vh-60">
+                <div class="h-100 rounded shadow-sm p-1 d-flex flex-column">
+
+                    <div class="text-center fw-semibold mb-2">Summary</div>
+
+                    <div class="row row-cols-3 g-2 flex-grow-1" id="summary">
+
+                        <!-- 9 CARDS -->
+                        <!-- Repeat this block 9 times -->
+
+                        <div class="col">
+                            <div
+                                class="soft-card h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">00</div>
+                                <div class="text-med">Label</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-5 d-flex flex-column vh-60">
+
+                <!-- AVAILABILITY -->
+                <div class="h-100 rounded p-1 d-flex flex-column vh-30">
+
+                    <div class="text-center fw-semibold mb-2">Availability</div>
+
+                    <div class="row row-cols-4 g-2 flex-grow-1" id="avail">
+
+                        <!-- 9 CARDS -->
+                        <!-- Repeat this block 9 times -->
+
+                        <div class="col">
+                            <div
+                                class="soft-card h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                                <div class="text-big">0</div>
+                                <div class="text-small">KNS</div>
+                                <div class="text-med">$0.00</div>
+                                <div class="text-small-dark bg-secondary rounded-1 px-1 mt-1">$0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">0</div>
+                                <div class="text-small">QQNS</div>
+                                <div class="text-med">$0.00</div>
+                                <div class="text-small-dark bg-secondary rounded-1 px-1 mt-1">$0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">0</div>
+                                <div class="text-small">KHC</div>
+                                <div class="text-med">$0.00</div>
+                                <div class="text-small-dark bg-secondary rounded-1 px-1 mt-1">$0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="soft-card h-100 d-flex flex-column justify-content-center align-items-center">
+                                <div class="text-big">0</div>
+                                <div class="text-small">QQHC</div>
+                                <div class="text-med">$0.00</div>
+                                <div class="text-small-dark bg-secondary rounded-1 px-1 mt-1">$0.00</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- GROUPS -->
+                <div class=" rounded shadow-sm p-1 flex-fill d-flex flex-column vh-30">
+                    <div class="text-center fw-semibold mb-2">Groups</div>
+
+                    <div class="d-flex flex-column gap-2" id="groups">
+
+                        <!-- MAX 4 ROWS -->
+                        <div class="soft-row p-2 d-flex justify-content-between align-items-center">
+                            <div class="text-small">Group Name</div>
+                            <div class="text-small">Arrival</div>
+                            <div class="text-small">Departure</div>
+                            <div class="text-small">Blocked</div>
+                            <div class="text-small">Picked</div>
+                        </div>
+                        <div class="soft-row p-2 d-flex justify-content-between align-items-center">
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                        </div>
+                        <div class="soft-row p-2 d-flex justify-content-between align-items-center">
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                        </div>
+                        <div class="soft-row p-2 d-flex justify-content-between align-items-center">
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                            <div class="text-small">-</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PASS ON LOG -->
+        <div class="row g-2">
+            <div class="col-12 text-center fw-semibold vh-3.5">Pass Down Logs</div>
+            <div class="col-6 rounded shadow-sm p-1 d-flex flex-column vh-36.5">
+                <div class="flex-grow-1 overflow-auto d-flex flex-column gap-2" id="pass1">
+
+                    <div class="soft-row p-2">
+                        <div class="text-small">
+                            <div class="d-inline-block h5 fw-semibold ">
+                                
+                            </div> <small class="text-body-secowndary-dark"></small>
+                        </div>
+                        <div class="text-small"></div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-6 rounded shadow-sm p-1 d-flex flex-column vh-36.5" hidden>
+
+                <div class="flex-grow-1 overflow-auto d-flex flex-column gap-2" id="pass2">
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
