@@ -9,6 +9,8 @@ from selenium import webdriver
 import numpy as np
 from selenium.webdriver.common.by import By
 from io import StringIO
+from dotenv import load_dotenv
+import os
 
 old_price = []
 diff = []
@@ -16,21 +18,32 @@ old_html = ""
 
 
 def main():
-    cookie_file = "cookies.env"
-    loggedout = False
+    with open("/AutoClerk_Dashboard/secrets/settings.json") as f:
+        settings = json.load(f)
+
+    load_dotenv(settings["credentials_file_path"])
+    username = os.getenv("USERNAME")
+    password = os.getenv("PASSWORD")
+    login_url = os.getenv("LOGIN_URL")
+    credentials = (username, password)
+    
+    cookie_file = settings["cookies_file_path"]
+    refresh_interval = settings["scraper_refresh_interval"]
+    data_output = settings["data_output_path"]
+    
+
+    loggedout = True
 
     while True:
 
         if loggedout:
-            login(cookie_file)
+            login(cookie_file, credentials)
             loggedout = False
 
         try:
-            cookies = get_cookies(cookie_file)
+            cookies = get_cookies(cookie_file, login_url)
 
-            r = requests.get(
-                "https://www.bwh.autoclerkcloud.com/logon.do2", cookies=cookies
-            )
+            r = requests.get(login_url, cookies=cookies)
             html_content = r.text
             # with open("oldhtml.html", "r", encoding="utf-8") as f:
             #     html_content = f.read()
@@ -41,7 +54,7 @@ def main():
                 all_data_json = data_to_json(parsed_html)
                 all_data_json.append(pass_on_dict)
 
-                with open("data.json", "w") as f:
+                with open(data_output, "w") as f:
                     json.dump(all_data_json, f, indent=4)
 
                 formatted_time = datetime.now().strftime("%H:%M:%S")
@@ -49,7 +62,7 @@ def main():
                 # Example output: 12:10:00
                 old_html = html_content
 
-            time.sleep(180)
+            time.sleep(refresh_interval)
 
         except AttributeError as ae:
             print(f"Error: {ae}")
@@ -72,9 +85,9 @@ def main():
             loggedout = True
 
 
-def login(cookie_file):
+def login(cookie_file, credentials, login_url):
     driver = webdriver.Chrome()
-    driver.get("https://www.bwh.autoclerkcloud.com/FrontDesk.do2")
+    driver.get(login_url)
     time.sleep(2)
 
     cookie_accept = driver.find_element(By.CLASS_NAME, "prominent-btn")
@@ -82,7 +95,7 @@ def login(cookie_file):
     time.sleep(2)
 
     user_field = driver.find_element(By.ID, "input28")
-    user_field.send_keys("7s54av")
+    user_field.send_keys(credentials[0])
     time.sleep(2)
 
     user_btn = driver.find_element(By.CLASS_NAME, "button-primary")
@@ -90,7 +103,7 @@ def login(cookie_file):
     time.sleep(2)
 
     pass_field = driver.find_element(By.ID, "input62")
-    pass_field.send_keys("Omsairam1!")
+    pass_field.send_keys(credentials[1])
     time.sleep(2)
 
     pass_btn = driver.find_element(By.CLASS_NAME, "button-primary")
@@ -303,12 +316,12 @@ def save_old_price(df):
 
 
 def match_room_price(df):
-    
+
     global old_price
 
     curr_count = df["count"].tolist()
     curr_price = df["price"].tolist()
-    
+
     pair_map = {0: 2, 2: 0, 1: 3, 3: 1}
 
     for i in range(len(curr_count)):
@@ -324,12 +337,12 @@ def match_room_price(df):
         #     curr_price[i] = curr_price[getPairIndex]
         #     curr_diff[i] = curr_diff[getPairIndex]
         #     curr_old[i] = curr_old[getPairIndex]
-        # # elif float(curr_price[i][2:]) == float(curr_price[getPairIndex][2:]):    
+        # # elif float(curr_price[i][2:]) == float(curr_price[getPairIndex][2:]):
         # elif float(curr_price[i][2:]) == 0 and float(curr_price[getPairIndex][2:]) == 0:
         #     curr_price[i] = old_price[i]
         #     curr_price[getPairIndex] = old_price[getPairIndex]
 
-        df["price"] = curr_price    
+        df["price"] = curr_price
     return df
 
 

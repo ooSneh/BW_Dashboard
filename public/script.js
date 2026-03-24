@@ -14,6 +14,7 @@ async function fetchJsonData(url) {
 
     // Process the data here (e.g., update the DOM, run calculations)
     console.log("Data fetched:", data);
+    return data;
     updateUI(data); // Call a function to handle your logic
   } catch (error) {
     console.error("Error fetching or processing JSON:", error);
@@ -104,7 +105,7 @@ function updateAvail(data) {
     //   console.log("reached2");
     // }
     availPrice.textContent = availData[i]["price"];
-    
+
     if (availDiffFloat > 0) {
       availChange.innerHTML = "&uarr; " + availData[i]["diff"];
       availChange.classList.replace("bg-secondary", "bg-success");
@@ -185,12 +186,24 @@ function updatePass(data) {
   }
 }
 
-// 3. Set up the continuous calling using setInterval()
-// The URL can be a local path (e.g., './data.json') or a remote API endpoint.
-const jsonUrl = "data.json";
-const intervalMilliseconds = 500000; // Time in milliseconds (e.g., 5000ms = 5 seconds)
+function setRefreshInterval(intervalTimeSec){
+  const refreshElement = document.getElementById("refresh");
+  console.log(intervalTimeSec);
+  refreshElement.setAttribute('content', intervalTimeSec);
+}
+
+
+async function init() {
+  const config = await fetchJsonData("config.json");
+  //console.log(config["dataFile"])
+  const dashboardData = await fetchJsonData(config["dataFile"]);
+
+  setRefreshInterval(config["HTMLrefreshIntervalseconds"])
+  updateUI(dashboardData);
+}
 
 // Call the fetch function immediately on page load
-fetchJsonData(jsonUrl);
+//fetchJsonData(jsonUrl);
+init();
 
 // Optional: To stop the continuous calls, you can use clearInterval(intervalId);

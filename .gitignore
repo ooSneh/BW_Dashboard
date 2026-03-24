@@ -1,5 +1,4 @@
 # Secrets (NEVER commit)
-secrets/
 *.env
 
 # Python
