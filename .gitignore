@@ -1,7 +1,8 @@
 # Secrets (NEVER commit)
 secrets/
+sandbox/
 *.env
-testy.py
+
 
 # Python
 __pycache__/
