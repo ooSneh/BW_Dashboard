@@ -5,6 +5,7 @@ secrets/
 # Python
 __pycache__/
 *.pyc
+testy.py
 
 # Data files
 public/data.json
