@@ -194,7 +194,7 @@ function setRefreshInterval(intervalTimeSec){
 
 
 async function init() {
-  const config = await fetchJsonData("config.json");
+  const config = await fetchJsonData("/AutoClerk_Dashboard/config/HTML_config.json");
   //console.log(config["dataFile"])
   const dashboardData = await fetchJsonData(config["dataFile"]);
 
