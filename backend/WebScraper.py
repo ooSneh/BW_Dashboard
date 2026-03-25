@@ -8,6 +8,7 @@ import selenium as sl
 from selenium import webdriver
 import numpy as np
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from io import StringIO
 from dotenv import load_dotenv
 import os
@@ -18,11 +19,11 @@ old_html = ""
 
 
 def main():
-    with open("/AutoClerk_Dashboard/config/python_settings.json") as f:
+    with open("../AutoClerk_Dashboard/config/python_settings.json") as f:
         settings = json.load(f)
 
     load_dotenv(settings["credentials_file_path"])
-    username = os.getenv("USERNAME")
+    username = os.getenv("USER")
     password = os.getenv("PASSWORD")
     login_url = os.getenv("LOGIN_URL")
     credentials = (username, password)
@@ -37,11 +38,11 @@ def main():
     while True:
 
         if loggedout:
-            login(cookie_file, credentials)
+            login(cookie_file, credentials, login_url)
             loggedout = False
 
         try:
-            cookies = get_cookies(cookie_file, login_url)
+            cookies = get_cookies(cookie_file)
 
             r = requests.get(login_url, cookies=cookies)
             html_content = r.text
@@ -86,7 +87,14 @@ def main():
 
 
 def login(cookie_file, credentials, login_url):
-    driver = webdriver.Chrome()
+    options = Options()
+    options.add_argument("--headless=new")   # modern headless mode
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+
+    driver = webdriver.Chrome(options)
     driver.get(login_url)
     time.sleep(2)
 
