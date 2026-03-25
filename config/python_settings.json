@@ -1,6 +1,6 @@
 {
   "scraper_refresh_interval": 10,
-  "data_output_path": "../Aayush_Dashboard/public/data.json",
-  "credentials_file_path": "../Aayush_Dashboard/secrets/credentials.env",
-  "cookies_file_path": "../Aayush_Dashboard/secrets/cookies.env"
+  "data_output_path": "./public/data.json",
+  "credentials_file_path": "./secrets/credentials.env",
+  "cookies_file_path": "./secrets/cookies.env"
 }

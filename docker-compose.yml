@@ -2,9 +2,10 @@ version: '3.8'
 
 services:
   scraper:
-    build: ./backend
+    image: oosneh/dashboard-scraper:preview
     container_name: dashboard-scraper
     volumes:
       - ./public:/app/public
       - ./secrets:/app/secrets
+      - ./config:/app/config
     restart: unless-stopped

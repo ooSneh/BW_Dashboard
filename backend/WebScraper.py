@@ -19,7 +19,7 @@ old_html = ""
 
 
 def main():
-    with open("../Aayush_Dashboard/config/python_settings.json") as f:
+    with open("./config/python_settings.json") as f:
         settings = json.load(f)
 
     load_dotenv(settings["credentials_file_path"])
