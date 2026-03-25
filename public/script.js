@@ -3,6 +3,7 @@ async function fetchJsonData(url) {
   try {
     // Fetch the data from the specified URL
     const response = await fetch(url);
+    console.log(response)
 
     // Check if the request was successful
     if (!response.ok) {
@@ -194,7 +195,7 @@ function setRefreshInterval(intervalTimeSec){
 
 
 async function init() {
-  const config = await fetchJsonData("/AutoClerk_Dashboard/config/HTML_config.json");
+  const config = await fetchJsonData("/config/HTML_config.json");
   //console.log(config["dataFile"])
   const dashboardData = await fetchJsonData(config["dataFile"]);
 
