@@ -1,6 +1,6 @@
 {
   "scraper_refresh_interval": 10,
-  "data_output_path": "./public/data.json",
+  "data_output_path": "./data/data.json",
   "credentials_file_path": "./secrets/credentials.env",
   "cookies_file_path": "./secrets/cookies.env"
 }

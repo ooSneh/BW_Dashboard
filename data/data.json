@@ -1,0 +1,83 @@
+[
+    [
+        {
+            "label": "Remaining Arrivals",
+            "value": 1.0
+        },
+        {
+            "label": "Remaining Departures",
+            "value": 0.0
+        },
+        {
+            "label": "Currently In House",
+            "value": 15.0
+        },
+        {
+            "label": "Stay Overs",
+            "value": 5.0
+        },
+        {
+            "label": "Arriving Tomorrow",
+            "value": 1.0
+        },
+        {
+            "label": "Departed Guests",
+            "value": 7.0
+        },
+        {
+            "label": "Vacant Dirty",
+            "value": 0.0
+        },
+        {
+            "label": "Vacant Clean",
+            "value": 34.0
+        },
+        {
+            "label": "Out of Order",
+            "value": 1.0
+        }
+    ],
+    [
+        {
+            "count": 2,
+            "room": "KNS",
+            "price": "$ 85.00",
+            "old price": "$ 85.00",
+            "diff": "$0.00"
+        },
+        {
+            "count": 30,
+            "room": "QQNS",
+            "price": "$ 95.00",
+            "old price": "$ 95.00",
+            "diff": "$0.00"
+        },
+        {
+            "count": 0,
+            "room": "KHC",
+            "price": "$ 85.00",
+            "old price": "$ 85.00",
+            "diff": "$0.00"
+        },
+        {
+            "count": 1,
+            "room": "QQHC",
+            "price": "$ 95.00",
+            "old price": "$ 95.00",
+            "diff": "$0.00"
+        }
+    ],
+    [],
+    [
+        {
+            "title": "RATE ISSUE",
+            "timestamp": "PL8GI4@bwhhotel.com at 2026-03-24 15:36:51.0",
+            "message": "Rate calendar in Autoclerk not working,\r\nWalk in rate 73.00 KNS and 79.00 QQNS Usr Rate Code MR"
+        },
+        {
+            "title": "AAYUSH SAYS",
+            "timestamp": "QW2G2G@bwhhotel.com at 2026-03-24 10:51:21.0",
+            "message": "Please do not throw away old folgers coffee cans, we reuse them for other things!"
+        }
+    ]
+]
