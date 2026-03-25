@@ -2,7 +2,7 @@
     [
         {
             "label": "Remaining Arrivals",
-            "value": 1.0
+            "value": 0.0
         },
         {
             "label": "Remaining Departures",
@@ -10,7 +10,7 @@
         },
         {
             "label": "Currently In House",
-            "value": 15.0
+            "value": 16.0
         },
         {
             "label": "Stay Overs",
@@ -30,7 +30,7 @@
         },
         {
             "label": "Vacant Clean",
-            "value": 34.0
+            "value": 33.0
         },
         {
             "label": "Out of Order",
@@ -69,6 +69,11 @@
     ],
     [],
     [
+        {
+            "title": "108- ROBERT GIER",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-24 22:28:15.0",
+            "message": "REQUESTED 12PM C/O WAS TOLD EXTRA CHARGE AFTER 12PM."
+        },
         {
             "title": "RATE ISSUE",
             "timestamp": "PL8GI4@bwhhotel.com at 2026-03-24 15:36:51.0",

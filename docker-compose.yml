@@ -1,11 +1,19 @@
-version: '3.8'
-
 services:
+  frontend:
+    image: oosneh/dashboard-frontend:preview
+    container_name: dashboard-frontend
+    ports:
+      - "3274:80"
+    volumes:
+      - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/data:/usr/share/nginx/html/data
+      - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/config:/usr/share/nginx/html/config
+    restart: unless-stopped
+
   scraper:
-    image: oosneh/dashboard-scraper:preview
+    image: oosneh/dashboard-backend:preview
     container_name: dashboard-scraper
     volumes:
-      - ./public:/app/public
-      - ./secrets:/app/secrets
-      - ./config:/app/config
+      - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/data:/app/data
+      - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/config:/app/config
+      - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/secrets:/app/secrets
     restart: unless-stopped

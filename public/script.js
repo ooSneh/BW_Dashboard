@@ -3,7 +3,7 @@ async function fetchJsonData(url) {
   try {
     // Fetch the data from the specified URL
     const response = await fetch(url);
-    // console.log(response)
+    //console.log(response)
 
     // Check if the request was successful
     if (!response.ok) {
@@ -14,7 +14,7 @@ async function fetchJsonData(url) {
     const data = await response.json();
 
     // Process the data here (e.g., update the DOM, run calculations)
-    // console.log("Data fetched:", data);
+    //console.log("Data fetched:", data);
     return data;
     updateUI(data); // Call a function to handle your logic
   } catch (error) {

@@ -4,9 +4,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import pandas as pd
 import json
-import selenium as sl
 from selenium import webdriver
-import numpy as np
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from io import StringIO
@@ -27,13 +25,16 @@ def main():
     password = os.getenv("PASSWORD")
     login_url = os.getenv("LOGIN_URL")
     credentials = (username, password)
-    
+
     cookie_file = settings["cookies_file_path"]
     refresh_interval = settings["scraper_refresh_interval"]
     data_output = settings["data_output_path"]
 
     loggedout = True
 
+    print("SCRAPER STARTED")
+    print("Writing to:", data_output)
+    
     while True:
 
         if loggedout:
@@ -87,7 +88,7 @@ def main():
 
 def login(cookie_file, credentials, login_url):
     options = Options()
-    options.add_argument("--headless=new")   # modern headless mode
+    options.add_argument("--headless=new")  # modern headless mode
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
