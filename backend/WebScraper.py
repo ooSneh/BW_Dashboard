@@ -31,7 +31,6 @@ def main():
     cookie_file = settings["cookies_file_path"]
     refresh_interval = settings["scraper_refresh_interval"]
     data_output = settings["data_output_path"]
-    
 
     loggedout = True
 
