@@ -1,6 +1,8 @@
 services:
   frontend:
-    image: oosneh/dashboard-frontend:preview
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
     container_name: dashboard-frontend
     ports:
       - "3274:80"
@@ -10,7 +12,9 @@ services:
     restart: unless-stopped
 
   scraper:
-    image: oosneh/dashboard-backend:preview
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: dashboard-scraper
     volumes:
       - C:/Users/TEST/Documents/Sandbox/Aayush_Dashboard/data:/app/data

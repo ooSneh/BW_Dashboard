@@ -29,12 +29,14 @@ def main():
     cookie_file = settings["cookies_file_path"]
     refresh_interval = settings["scraper_refresh_interval"]
     data_output = settings["data_output_path"]
+    screenshot_ouput = settings["screenshot_save_path"]
+    screenshot_resolution = settings["screenshot_resolution"]
 
     loggedout = True
 
     print("SCRAPER STARTED")
     print("Writing to:", data_output)
-    
+
     while True:
 
         if loggedout:
@@ -63,6 +65,28 @@ def main():
                 # Example output: 12:10:00
                 old_html = html_content
 
+                try:
+                    driver = run_headless(screenshot_resolution)
+                    driver.execute_cdp_cmd(
+                        "Emulation.setDeviceMetricsOverride",
+                        {
+                            "width": 960,
+                            "height": 540,
+                            "deviceScaleFactor": 1,
+                            "mobile": False,
+                        },
+                    )
+                    driver.get("https://bw.kemcho.info/")
+                    time.sleep(2)
+                    driver.save_screenshot(screenshot_ouput)
+
+                except Exception as e:
+                    print(f"An error occurred: {e}")
+
+                finally:
+                    # Always close the browser
+                    driver.quit()
+
             time.sleep(refresh_interval)
 
         except AttributeError as ae:
@@ -86,15 +110,21 @@ def main():
             loggedout = True
 
 
-def login(cookie_file, credentials, login_url):
+def run_headless(resolution):
     options = Options()
     options.add_argument("--headless=new")  # modern headless mode
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--window-size=1920,1080")
+    options.add_argument(resolution)
     options.add_argument("--disable-blink-features=AutomationControlled")
 
     driver = webdriver.Chrome(options)
+
+    return driver
+
+
+def login(cookie_file, credentials, login_url):
+    driver = run_headless("--window-size=1920,1080")
     driver.get(login_url)
     time.sleep(2)
 
