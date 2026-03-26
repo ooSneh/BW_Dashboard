@@ -4,5 +4,5 @@
   "screenshot_save_path": "./data/dashboard.png",
   "credentials_file_path": "./secrets/credentials.env",
   "cookies_file_path": "./secrets/cookies.env",
-  "screenshot_resolution": "--window-size=960,540"
+  "screenshot_resolution": "--window-size=1920,1080"
 }

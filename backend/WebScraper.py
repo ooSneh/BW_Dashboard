@@ -67,15 +67,23 @@ def main():
 
                 try:
                     driver = run_headless(screenshot_resolution)
+                    shot_width = int(
+                        screenshot_resolution[14 : screenshot_resolution.find(",")]
+                    )
+                    shot_height = int(
+                        screenshot_resolution[screenshot_resolution.find(",") + 1 :]
+                    )
+                    print(shot_width, shot_height)
                     driver.execute_cdp_cmd(
                         "Emulation.setDeviceMetricsOverride",
                         {
-                            "width": 960,
-                            "height": 540,
+                            "width": shot_width,
+                            "height": shot_height,
                             "deviceScaleFactor": 1,
                             "mobile": False,
                         },
                     )
+                    driver.execute_script("document.body.style.overflow = 'hidden';")
                     driver.get("https://bw.kemcho.info/")
                     time.sleep(2)
                     driver.save_screenshot(screenshot_ouput)
