@@ -73,7 +73,7 @@ def main():
                     shot_height = int(
                         screenshot_resolution[screenshot_resolution.find(",") + 1 :]
                     )
-                    print(shot_width, shot_height)
+                    # print(shot_width, shot_height)
                     driver.execute_cdp_cmd(
                         "Emulation.setDeviceMetricsOverride",
                         {

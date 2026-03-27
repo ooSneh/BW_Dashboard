@@ -2,7 +2,7 @@
     [
         {
             "label": "Remaining Arrivals",
-            "value": 0.0
+            "value": 1.0
         },
         {
             "label": "Remaining Departures",
@@ -10,19 +10,19 @@
         },
         {
             "label": "Currently In House",
-            "value": 11.0
+            "value": 15.0
         },
         {
             "label": "Stay Overs",
-            "value": 8.0
+            "value": 6.0
         },
         {
             "label": "Arriving Tomorrow",
-            "value": 8.0
+            "value": 16.0
         },
         {
             "label": "Departed Guests",
-            "value": 8.0
+            "value": 6.0
         },
         {
             "label": "Vacant Dirty",
@@ -30,7 +30,7 @@
         },
         {
             "label": "Vacant Clean",
-            "value": 38.0
+            "value": 34.0
         },
         {
             "label": "Out of Order",
@@ -39,60 +39,48 @@
     ],
     [
         {
-            "count": 5,
+            "count": 4,
             "room": "KNS",
-            "price": "$ 85.00",
-            "old price": "$ 85.00",
+            "price": "$ 70.00",
+            "old price": "$ 70.00",
             "diff": "$0.00"
         },
         {
-            "count": 32,
+            "count": 27,
             "room": "QQNS",
-            "price": "$ 95.00",
-            "old price": "$ 95.00",
+            "price": "$ 80.00",
+            "old price": "$ 80.00",
             "diff": "$0.00"
         },
         {
             "count": 1,
             "room": "KHC",
-            "price": "$ 85.00",
-            "old price": "$ 85.00",
+            "price": "$ 70.00",
+            "old price": "$ 70.00",
             "diff": "$0.00"
         },
         {
-            "count": 0,
+            "count": 1,
             "room": "QQHC",
-            "price": "$ 95.00",
-            "old price": "$ 95.00",
+            "price": "$ 80.00",
+            "old price": "$ 80.00",
             "diff": "$0.00"
         }
     ],
-    [],
     [
         {
-            "title": "House Keeping",
-            "timestamp": "324CK2@bwhhotel.com at 2026-03-25 20:56:36.0",
-            "message": "Please ask housekeeper to check for tissue box & toilet papers in rooms and make sure they are properly stocked."
-        },
+            "Reservation Name": "Jacksboro ISD",
+            "Arrival": "03-26-2026",
+            "Departure": "03-27-2026",
+            "Blocked": "4",
+            "Picked Up": "4"
+        }
+    ],
+    [
         {
-            "title": "Sams Club Order Placed",
-            "timestamp": "QW2G2G@bwhhotel.com at 2026-03-25 20:54:09.0",
-            "message": "will arrive tomorrow "
-        },
-        {
-            "title": "209",
-            "timestamp": "2DJDW9@bwhhotel.com at 2026-03-25 08:17:20.0",
-            "message": "has 1 exytra pillow from room 101"
-        },
-        {
-            "title": "108- ROBERT GIER",
-            "timestamp": "2DJDW9@bwhhotel.com at 2026-03-25 07:25:11.0",
-            "message": "REQUESTED 12PM C/O WAS TOLD EXTRA CHARGE AFTER 12PM."
-        },
-        {
-            "title": "RATE ISSUE",
-            "timestamp": "2DJDW9@bwhhotel.com at 2026-03-25 07:16:43.0",
-            "message": "Rate calendar in Autoclerk not working,\r\nWalk in rate 73.00 KNS and 79.00 QQNS Usr Rate Code MR"
+            "title": "FROM HK",
+            "timestamp": "QW2G2G@bwhhotel.com at 2026-03-26 10:29:41.0",
+            "message": "Please do not put laundry on the floor, all dirty laundry in the red basket or straight into a washer."
         }
     ]
 ]
