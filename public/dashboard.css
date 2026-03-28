@@ -50,6 +50,16 @@ body {
   white-space: nowrap;
 }
 
+html {
+  scrollbar-width: none; /* Firefox */
+}
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+body::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera, older Edge */
+}
+
 [hidden] {
   display: none !important;
 }

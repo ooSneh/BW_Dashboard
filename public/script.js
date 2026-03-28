@@ -161,12 +161,12 @@ function updatePass(data) {
       const clone = passCard.cloneNode(true);
       passElement2.appendChild(clone);
       passCard = clone;
-      continue;
     } else if (i != 0) {
       const clone = passCard.cloneNode(true);
       passCard.after(clone);
       passCard = clone;
     }
+    // console.log(i, "reached", passCard);
     const passTitle = passCard.children[0].children[0];
     const passTime = passCard.children[0].children[1];
     const passMess = passCard.children[1];
@@ -187,10 +187,10 @@ function updatePass(data) {
   }
 }
 
-function setRefreshInterval(intervalTimeSec){
+function setRefreshInterval(intervalTimeSec) {
   const refreshElement = document.getElementById("refresh");
   // console.log(intervalTimeSec);
-  refreshElement.setAttribute('content', intervalTimeSec);
+  refreshElement.setAttribute("content", intervalTimeSec);
 }
 
 
@@ -199,7 +199,7 @@ async function init() {
   //console.log(config["dataFile"])
   const dashboardData = await fetchJsonData(config["dataFile"]);
 
-  setRefreshInterval(config["HTMLrefreshIntervalseconds"])
+  setRefreshInterval(config["HTMLrefreshIntervalseconds"]);
   updateUI(dashboardData);
 }
 

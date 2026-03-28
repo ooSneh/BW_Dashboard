@@ -83,8 +83,7 @@ def main():
                             "mobile": False,
                         },
                     )
-                    driver.execute_script("document.body.style.overflow = 'hidden';")
-                    driver.get("https://bw.kemcho.info/")
+                    driver.get("http://192.168.2.11:3274/")
                     time.sleep(2)
                     driver.save_screenshot(screenshot_ouput)
 

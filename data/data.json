@@ -2,7 +2,7 @@
     [
         {
             "label": "Remaining Arrivals",
-            "value": 1.0
+            "value": 26.0
         },
         {
             "label": "Remaining Departures",
@@ -10,27 +10,27 @@
         },
         {
             "label": "Currently In House",
-            "value": 15.0
+            "value": 17.0
         },
         {
             "label": "Stay Overs",
-            "value": 6.0
+            "value": 14.0
         },
         {
             "label": "Arriving Tomorrow",
-            "value": 16.0
+            "value": 3.0
         },
         {
             "label": "Departed Guests",
-            "value": 6.0
+            "value": 23.0
         },
         {
             "label": "Vacant Dirty",
-            "value": 0.0
+            "value": 6.0
         },
         {
             "label": "Vacant Clean",
-            "value": 34.0
+            "value": 26.0
         },
         {
             "label": "Out of Order",
@@ -39,48 +39,70 @@
     ],
     [
         {
-            "count": 4,
+            "count": 0,
             "room": "KNS",
-            "price": "$ 70.00",
-            "old price": "$ 70.00",
+            "price": "$ 0.00",
+            "old price": "$ 0.00",
             "diff": "$0.00"
         },
         {
-            "count": 27,
+            "count": 6,
             "room": "QQNS",
-            "price": "$ 80.00",
-            "old price": "$ 80.00",
+            "price": "$ 130.00",
+            "old price": "$ 130.00",
             "diff": "$0.00"
         },
         {
-            "count": 1,
+            "count": 0,
             "room": "KHC",
-            "price": "$ 70.00",
-            "old price": "$ 70.00",
+            "price": "$ 0.00",
+            "old price": "$ 0.00",
             "diff": "$0.00"
         },
         {
-            "count": 1,
+            "count": 0,
             "room": "QQHC",
-            "price": "$ 80.00",
-            "old price": "$ 80.00",
+            "price": "$ 130.00",
+            "old price": "$ 130.00",
             "diff": "$0.00"
         }
     ],
+    [],
     [
         {
-            "Reservation Name": "Jacksboro ISD",
-            "Arrival": "03-26-2026",
-            "Departure": "03-27-2026",
-            "Blocked": "4",
-            "Picked Up": "4"
-        }
-    ],
-    [
+            "title": "Late Checkout Request",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 09:04:57.0",
+            "message": "Guest staying in room 201 checking out on Sunday has requested for late checkout at 3:00 pm (willing to pay extra for late hours) - Babul please let us know if we can allow this late checkout or not and how much to charge for late checkout...\r\nApproved by babul charge $25.00/"
+        },
         {
-            "title": "FROM HK",
-            "timestamp": "QW2G2G@bwhhotel.com at 2026-03-26 10:29:41.0",
-            "message": "Please do not put laundry on the floor, all dirty laundry in the red basket or straight into a washer."
+            "title": "FRONT DESK",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 07:15:41.0",
+            "message": "Everyone please check if there are any 2U-Book early and save or 2UB resv. and charge them right away. and try enrolling guest into BWR Program."
+        },
+        {
+            "title": "Room 114",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 05:30:34.0",
+            "message": "Guest Complained regarding nasty smell (went check wasnt bad as they said but).. \r\nchanged room to room 119.\r\n(Details shared with Babul already)"
+        },
+        {
+            "title": "Room- 214",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 05:30:19.0",
+            "message": "1) Fridge Ice melted & has water on bottom of the fridge.\r\n2) Guest Leaned on chair, & chair broke down he slammed his head against table.\r\n- Guest had 2 nights resv. but will checkout tomorrow morning.\r\nBabul talked with guest and decided to let him cxl tomorrow night resv. also provide 15% cashback on top of refund. "
+        },
+        {
+            "title": "Room 120",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 05:30:02.0",
+            "message": "Guest Complained regarding dirty toilet and dirty spots on shower curtain - changed to room 122"
+        },
+        {
+            "title": "Johnny",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 05:29:32.0",
+            "message": "Please Ask Housekeeping remove shower curtain from room 120 and wash it.\r\n&\r\nBabul has asked you to call the group UNAL and confirm rates."
+        },
+        {
+            "title": "No Show (27/03/2026)",
+            "timestamp": "324CK2@bwhhotel.com at 2026-03-28 05:27:53.0",
+            "message": "\r\nDay Nikalas- No Show\r\nTaylor William - No Show"
         }
     ]
 ]
