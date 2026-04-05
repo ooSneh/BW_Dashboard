@@ -31,6 +31,7 @@ def main():
     data_output = settings["data_output_path"]
     screenshot_ouput = settings["screenshot_save_path"]
     screenshot_resolution = settings["screenshot_resolution"]
+    screenshot_url = settings["screenshot_URL"]
 
     loggedout = True
 
@@ -83,7 +84,7 @@ def main():
                             "mobile": False,
                         },
                     )
-                    driver.get("http://192.168.2.11:3274/")
+                    driver.get(screenshot_url)
                     time.sleep(2)
                     driver.save_screenshot(screenshot_ouput)
 

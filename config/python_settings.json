@@ -4,5 +4,6 @@
   "screenshot_save_path": "./data/dashboard.png",
   "credentials_file_path": "./secrets/credentials.env",
   "cookies_file_path": "./secrets/cookies.env",
-  "screenshot_resolution": "--window-size=1920,1080"
+  "screenshot_resolution": "--window-size=1920,1080",
+  "screenshot_URL": "http://192.168.1.30:3274"
 }
