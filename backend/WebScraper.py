@@ -8,7 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from io import StringIO
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
 
 old_price = []
@@ -20,10 +21,11 @@ def main():
     with open("./config/python_settings.json") as f:
         settings = json.load(f)
 
-    load_dotenv(settings["credentials_file_path"])
-    username = os.getenv("USER")
-    password = os.getenv("PASSWORD")
-    login_url = os.getenv("LOGIN_URL")
+    # load_dotenv(settings["credentials_file_path"])
+    credentials = dotenv_values(settings["credentials_file_path"])
+    username = credentials["USER"]
+    password = credentials["PASSWORD"]
+    login_url = credentials["LOGIN_URL"]
     credentials = (username, password)
 
     cookie_file = settings["cookies_file_path"]
@@ -34,7 +36,7 @@ def main():
     screenshot_url = settings["screenshot_URL"]
 
     loggedout = True
-
+    
     print("SCRAPER STARTED")
     print("Writing to:", data_output)
 
@@ -46,15 +48,14 @@ def main():
 
         try:
             cookies = get_cookies(cookie_file)
-
+            # for some reason when downloading the html and if a room is overbooked, the price for the overbooked room become NaN, this should be fixed when match_room_price
             r = requests.get(login_url, cookies=cookies)
             html_content = r.text
             # with open("oldhtml.html", "r", encoding="utf-8") as f:
             #     html_content = f.read()
             global old_html
             if old_html != html_content:  # Only update if change is detected
-                parsed_html, pass_on_dict = parse_html(html_content)
-
+                parsed_html, pass_on_dict = parse_html(html_content,  dotenv_values(settings["usernames_file_path"]))
                 all_data_json = data_to_json(parsed_html)
                 all_data_json.append(pass_on_dict)
 
@@ -112,10 +113,10 @@ def main():
             print("Too many request, Attempting to relog")
             loggedout = True
 
-        except Exception as ex:
-            print(f"Error: {ex}")
-            print("New error, idk what this is yet.")
-            loggedout = True
+        # except Exception as ex:
+        #     print(f"Error: {ex}")
+        #     print("New error, idk what this is yet.")
+        #     loggedout = True
 
 
 def run_headless(resolution):
@@ -134,31 +135,41 @@ def run_headless(resolution):
 def login(cookie_file, credentials, login_url):
     driver = run_headless("--window-size=1920,1080")
     driver.get(login_url)
+    print("Opened new chrome window")
     time.sleep(2)
 
     cookie_accept = driver.find_element(By.CLASS_NAME, "prominent-btn")
     cookie_accept.click()
+    print("Clicked Continue")
     time.sleep(2)
 
     user_field = driver.find_element(By.ID, "input28")
+    print("Selected username field")
     user_field.send_keys(credentials[0])
+    print("Entered username")
     time.sleep(2)
 
     user_btn = driver.find_element(By.CLASS_NAME, "button-primary")
     user_btn.click()
+    print("Hit Next")
     time.sleep(2)
 
     pass_field = driver.find_element(By.ID, "input62")
+    print("Selected password field")
     pass_field.send_keys(credentials[1])
+    print("Entered password")
     time.sleep(2)
 
     pass_btn = driver.find_element(By.CLASS_NAME, "button-primary")
     pass_btn.click()
+    print("Hit Verify")
     time.sleep(5)
 
     cookies_json = driver.get_cookies()
+    print("Grabbed Cookies")
     with open(cookie_file, "w") as outfile:
         json.dump(cookies_json, outfile, indent=4)
+    print("Dumped Cookies")
 
     driver.quit()
 
@@ -175,7 +186,7 @@ def get_cookies(cookie_file):
     return cookies
 
 
-def parse_html(html_content):
+def parse_html(html_content, usernames_key):
     soup = BeautifulSoup(html_content, "html.parser")
 
     for a in soup.find_all("a"):
@@ -196,7 +207,7 @@ def parse_html(html_content):
     avail_data = soup.find("div", "col-availability")
     for tr in avail_data.find_all("tr"):
         tr["class"] = ["avail-card"]
-
+        
     pass_data = soup.find("div", "col-pass-on-log")
 
     groups_data = soup.find("div", "col-groups")
@@ -239,8 +250,21 @@ def parse_html(html_content):
             }
         )
 
+    add_employee_names(pass_on_dict, usernames_key)
+
     return all_data_html, pass_on_dict
 
+def add_employee_names(pass_on_dict, usernames_dict):
+    user_key = usernames_dict
+    
+    for pass_on in pass_on_dict:
+        user_code = pass_on['timestamp'].split()[0]
+        employee = user_key[user_code]
+        pass_on['timestamp'] = pass_on['timestamp'].replace(user_code, employee)
+        # print(pass_on)
+        
+    # print(pass_on_dict)
+        
 
 def data_to_json(parsed_html):
     extract_data = pd.read_html(StringIO(parsed_html))
@@ -367,15 +391,20 @@ def match_room_price(df):
 
     curr_count = df["count"].tolist()
     curr_price = df["price"].tolist()
+    # print(curr_count, curr_price)
 
+    # pair maps regular room and hadicap room together
     pair_map = {0: 2, 2: 0, 1: 3, 3: 1}
 
-    for i in range(len(curr_count)):
+    for i in range(len(curr_count)): 
         getPairIndex = pair_map.get(i)
+        # print("i=", i, "\ncurr_count[i]=", curr_count[i], "\ngetpairindex=", getPairIndex, "\n", curr_count[getPairIndex])
+        """check if both handicap and regular rooms are fully booked, if so take the old price"""
         if curr_count[i] == 0 and curr_count[getPairIndex] == 0 and old_price:
             curr_price[i] = old_price[i]
-            curr_price[getPairIndex] = old_price[getPairIndex]
-        elif curr_count[i] == 0:
+            curr_price[getPairIndex] = old_price[getPairIndex]  
+        # the current room is fully/OVER booked and its pair isnt, take the current price from the pair
+        elif curr_count[i] <= 0:
             curr_price[i] = curr_price[getPairIndex]
         # if (float(curr_old[i][2:]) != float(curr_old[getPairIndex][2:])) and float(
         #     curr_price[i][2:]
