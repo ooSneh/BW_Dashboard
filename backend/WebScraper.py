@@ -259,8 +259,9 @@ def add_employee_names(pass_on_dict, usernames_dict):
     
     for pass_on in pass_on_dict:
         user_code = pass_on['timestamp'].split()[0]
-        employee = user_key[user_code]
-        pass_on['timestamp'] = pass_on['timestamp'].replace(user_code, employee)
+        if user_code in user_key: #Check if the username has been mapped in Employee_username file, pass if not
+            employee = user_key[user_code]
+            pass_on['timestamp'] = pass_on['timestamp'].replace(user_code, employee)
         # print(pass_on)
         
     # print(pass_on_dict)
