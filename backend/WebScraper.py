@@ -400,8 +400,8 @@ def match_room_price(df):
     for i in range(len(curr_count)): 
         getPairIndex = pair_map.get(i)
         # print("i=", i, "\ncurr_count[i]=", curr_count[i], "\ngetpairindex=", getPairIndex, "\n", curr_count[getPairIndex])
-        """check if both handicap and regular rooms are fully booked, if so take the old price"""
-        if curr_count[i] == 0 and curr_count[getPairIndex] == 0 and old_price:
+        """check if both handicap and regular rooms are fully/OVER booked, if so take the old price"""
+        if curr_count[i] <= 0 and curr_count[getPairIndex] <= 0 and old_price:
             curr_price[i] = old_price[i]
             curr_price[getPairIndex] = old_price[getPairIndex]  
         # the current room is fully/OVER booked and its pair isnt, take the current price from the pair
