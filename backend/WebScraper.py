@@ -128,10 +128,10 @@ def main():
             loggedout = True
 
 
-        # except Exception as ex:
-        #     print(f"Error: {ex}")
-        #     print("New error, idk what this is yet.")
-        #     loggedout = True
+        except Exception as ex:
+            print(f"Error: {ex}")
+            print("New error, idk what this is yet.")
+            loggedout = True
 
 
 def unpack_python_config():
