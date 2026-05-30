@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from io import StringIO
+
 # from dotenv import load_dotenv
 from dotenv import dotenv_values
 import os
@@ -15,28 +16,25 @@ import os
 old_price = []
 diff = []
 old_html = ""
+(
+    username,
+    password,
+    login_url,
+    cookie_file,
+    refresh_interval,
+    data_output,
+    screenshot_ouput,
+    screenshot_resolution,
+    screenshot_url,
+) = [""] * 9
+credentials = ()
+username_key = {}
 
 
 def main():
-    with open("./config/python_settings.json") as f:
-        settings = json.load(f)
-
-    # load_dotenv(settings["credentials_file_path"])
-    credentials = dotenv_values(settings["credentials_file_path"])
-    username = credentials["USER"]
-    password = credentials["PASSWORD"]
-    login_url = credentials["LOGIN_URL"]
-    credentials = (username, password)
-
-    cookie_file = settings["cookies_file_path"]
-    refresh_interval = settings["scraper_refresh_interval"]
-    data_output = settings["data_output_path"]
-    screenshot_ouput = settings["screenshot_save_path"]
-    screenshot_resolution = settings["screenshot_resolution"]
-    screenshot_url = settings["screenshot_URL"]
-
+    unpack_python_config()
     loggedout = True
-    
+
     print("SCRAPER STARTED")
     print("Writing to:", data_output)
 
@@ -55,7 +53,7 @@ def main():
             #     html_content = f.read()
             global old_html
             if old_html != html_content:  # Only update if change is detected
-                parsed_html, pass_on_dict = parse_html(html_content,  dotenv_values(settings["usernames_file_path"]))
+                parsed_html, pass_on_dict = parse_html(html_content)
                 all_data_json = data_to_json(parsed_html)
                 all_data_json.append(pass_on_dict)
 
@@ -113,10 +111,48 @@ def main():
             print("Too many request, Attempting to relog")
             loggedout = True
 
+        except IndexError as ie:
+            print(f"Error: {ie}")
+            print(
+                "NO DATA. Failed to import old data to preserve difference data EEPROM, continuing as a fresh installation with no old data"
+            )
+            print("Relogging in to fetch data")
+            loggedout = True
+            
+        except KeyError as ke:
+            print(f"Error: {ie}")
+            print(
+                "INCOMPLETE DATA. Failed to import old data to preserve difference data EEPROM, continuing as a fresh installation with no old data"
+            )
+            print("Relogging in to fetch data")
+            loggedout = True
+
+
         # except Exception as ex:
         #     print(f"Error: {ex}")
         #     print("New error, idk what this is yet.")
         #     loggedout = True
+
+
+def unpack_python_config():
+    global username, password, login_url, cookie_file, refresh_interval, data_output, screenshot_ouput, screenshot_resolution, screenshot_url, credentials, username_key
+    with open("./config/python_settings.json") as f:
+        settings = json.load(f)
+
+    credentials_dot = dotenv_values(settings["credentials_file_path"])
+    username = credentials_dot["USER"]
+    password = credentials_dot["PASSWORD"]
+    login_url = credentials_dot["LOGIN_URL"]
+    credentials = (username, password)
+
+    cookie_file = settings["cookies_file_path"]
+    refresh_interval = settings["scraper_refresh_interval"]
+    data_output = settings["data_output_path"]
+    screenshot_ouput = settings["screenshot_save_path"]
+    screenshot_resolution = settings["screenshot_resolution"]
+    screenshot_url = settings["screenshot_URL"]
+
+    username_key = dotenv_values(settings["usernames_file_path"])
 
 
 def run_headless(resolution):
@@ -186,7 +222,7 @@ def get_cookies(cookie_file):
     return cookies
 
 
-def parse_html(html_content, usernames_key):
+def parse_html(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
 
     for a in soup.find_all("a"):
@@ -207,7 +243,7 @@ def parse_html(html_content, usernames_key):
     avail_data = soup.find("div", "col-availability")
     for tr in avail_data.find_all("tr"):
         tr["class"] = ["avail-card"]
-        
+
     pass_data = soup.find("div", "col-pass-on-log")
 
     groups_data = soup.find("div", "col-groups")
@@ -250,22 +286,23 @@ def parse_html(html_content, usernames_key):
             }
         )
 
-    add_employee_names(pass_on_dict, usernames_key)
+    add_employee_names(pass_on_dict)
 
     return all_data_html, pass_on_dict
 
-def add_employee_names(pass_on_dict, usernames_dict):
-    user_key = usernames_dict
-    
+
+def add_employee_names(pass_on_dict):
     for pass_on in pass_on_dict:
-        user_code = pass_on['timestamp'].split()[0]
-        if user_code in user_key: #Check if the username has been mapped in Employee_username file, pass if not
-            employee = user_key[user_code]
-            pass_on['timestamp'] = pass_on['timestamp'].replace(user_code, employee)
+        user_code = pass_on["timestamp"].split()[0]
+        if (
+            user_code in username_key
+        ):  # Check if the username has been mapped in Employee_username file, pass if not
+            employee = username_key[user_code]
+            pass_on["timestamp"] = pass_on["timestamp"].replace(user_code, employee)
         # print(pass_on)
-        
+
     # print(pass_on_dict)
-        
+
 
 def data_to_json(parsed_html):
     extract_data = pd.read_html(StringIO(parsed_html))
@@ -301,7 +338,7 @@ def data_to_json(parsed_html):
 def format_currency(amount):
     """Formats a float as a currency string (e.g., -$1,234.56)."""
     # Format the absolute value with commas and two decimal places
-    formatted_amount = f"${abs(amount):,.2f}"
+    formatted_amount = f"$ {abs(amount):,.2f}"
     # Prepend a minus sign if the original amount was negative
     if amount < 0:
         return f"-{formatted_amount}"
@@ -340,13 +377,57 @@ def fix_avail_dataset(df, extract_data, stepOne):
     return df
 
 
+def is_json_file_empty(file_path):
+    # 1. Check if file is physically empty (0 bytes)
+    if os.path.getsize(file_path) == 0:
+        return True
+
+    # 2. Check if the file contains empty JSON structures (like {} or [])
+    with open(file_path, "r") as file:
+        try:
+            data = json.load(file)
+            # Returns True if data evaluates to an empty dict/list/string
+            return not data
+        except json.JSONDecodeError:
+            # Handles files that have broken JSON or whitespace only
+            return True
+
+
 # Saves the previous price for rooms and calulcates the difference.
 # Also adds 2 new columns for old price and difference in price to the dataset
 def save_old_price(df):
     global old_price
     global diff
 
-    if old_price == []:
+    # if os.path.isfile(data_output):
+    #     print(data_output, )
+
+    # If script has restarted and there is old data present (in data.json), recalculate the the old price and inject it into old_price
+    if (
+        old_price == []
+        and os.path.isfile(data_output)
+        and not is_json_file_empty(data_output)
+    ):
+        with open(data_output) as f:
+            old_json_data = json.load(f)
+
+        # Calculate the old price from old data and reinsert it into global old_price to preserve difference data
+        for room_type in old_json_data[1]:
+            # print(room_type)
+            temp_old_price = float(room_type["old price"][2:])
+            temp_diff = float(room_type["diff"][1:])
+            real_old_price = format_currency(temp_old_price - temp_diff)
+            # print(real_old_price)
+            old_price.append(real_old_price)
+
+        diff = [
+            format_currency(float(p[2:]) - float(old_price[j][2:]))
+            for j, p in enumerate(df["price"].tolist())
+        ]
+
+        df["old price"] = old_price
+
+    elif old_price == []:
         old_price = df["price"].tolist()
         diff = [
             format_currency(float(p[2:]) - float(old_price[j][2:]))
@@ -354,7 +435,7 @@ def save_old_price(df):
         ]
         df["old price"] = old_price
 
-    elif old_price != df["price"].tolist():
+    if old_price != df["price"].tolist():
         # print("new price", df["price"].tolist())
         # print("old_price", old_price)
         # print("displayed_old_price1", displayed_old_price)
@@ -397,13 +478,13 @@ def match_room_price(df):
     # pair maps regular room and hadicap room together
     pair_map = {0: 2, 2: 0, 1: 3, 3: 1}
 
-    for i in range(len(curr_count)): 
+    for i in range(len(curr_count)):
         getPairIndex = pair_map.get(i)
         # print("i=", i, "\ncurr_count[i]=", curr_count[i], "\ngetpairindex=", getPairIndex, "\n", curr_count[getPairIndex])
         """check if both handicap and regular rooms are fully/OVER booked, if so take the old price"""
         if curr_count[i] <= 0 and curr_count[getPairIndex] <= 0 and old_price:
             curr_price[i] = old_price[i]
-            curr_price[getPairIndex] = old_price[getPairIndex]  
+            curr_price[getPairIndex] = old_price[getPairIndex]
         # the current room is fully/OVER booked and its pair isnt, take the current price from the pair
         elif curr_count[i] <= 0:
             curr_price[i] = curr_price[getPairIndex]

@@ -79,7 +79,7 @@ function updateAvail(data) {
     availRoom.textContent = availData[i]["room"];
 
     // let currPrice = parseFloat(availData[i]["price"].replace("$ ", ""));
-    let availDiffFloat = parseFloat(availData[i]["diff"].replace("$", ""));
+    let availDiffFloat = parseFloat(availData[i]["diff"].replace("$ ", ""));
     // const pairs = [
     //   [0, 2],
     //   [1, 3],
