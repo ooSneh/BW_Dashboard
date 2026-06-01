@@ -16,4 +16,4 @@ RUN pip3 install lxml
 
 COPY backend/WebScraper.py .
 
-CMD ["python3", "WebScraper.py"]
+CMD ["python3", "-u", "WebScraper.py"]

@@ -2,7 +2,7 @@
     [
         {
             "label": "Remaining Arrivals",
-            "value": 2.0
+            "value": 5.0
         },
         {
             "label": "Remaining Departures",
@@ -10,27 +10,27 @@
         },
         {
             "label": "Currently In House",
-            "value": 14.0
+            "value": 15.0
         },
         {
             "label": "Stay Overs",
-            "value": 2.0
+            "value": 9.0
         },
         {
             "label": "Arriving Tomorrow",
-            "value": 4.0
+            "value": 2.0
         },
         {
             "label": "Departed Guests",
-            "value": 13.0
+            "value": 10.0
         },
         {
             "label": "Vacant Dirty",
-            "value": 7.0
+            "value": 4.0
         },
         {
             "label": "Vacant Clean",
-            "value": 25.0
+            "value": 27.0
         },
         {
             "label": "Out of Order",
@@ -39,55 +39,55 @@
     ],
     [
         {
-            "count": 6,
+            "count": 2,
             "room": "KNS",
-            "price": "$ 109.00",
-            "old price": "$ 78.00",
-            "diff": "$ 31.00"
+            "price": "$ 89.00",
+            "old price": "$ 89.00",
+            "diff": "-$ 30.00"
         },
         {
-            "count": 24,
+            "count": 23,
             "room": "QQNS",
-            "price": "$ 119.00",
-            "old price": "$ 88.00",
-            "diff": "$ 31.00"
+            "price": "$ 99.00",
+            "old price": "$ 99.00",
+            "diff": "-$ 21.00"
         },
         {
-            "count": 0,
+            "count": 1,
             "room": "KHC",
-            "price": "$ 109.00",
-            "old price": "$ 78.00",
-            "diff": "$ 31.00"
+            "price": "$ 89.00",
+            "old price": "$ 89.00",
+            "diff": "-$ 30.00"
         },
         {
             "count": 0,
             "room": "QQHC",
-            "price": "$ 119.00",
-            "old price": "$ 88.00",
-            "diff": "$ 31.00"
+            "price": "$ 99.00",
+            "old price": "$ 99.00",
+            "diff": "-$ 21.00"
         }
     ],
     [],
     [
         {
-            "title": "#117 & 103",
-            "timestamp": "324CK2@bwhhotel.com at 2026-05-29 06:21:55.0",
-            "message": "Staying for 28 days, Need HK every Sat 05/30, 06/06, 06/13, 06/20. Note on HK Paper too\r\nLONG STAY - KEEP THIS NOTE ON TOP EVERYDAY - BABUL"
+            "title": "113 & 120",
+            "timestamp": "2DJDW9@bwhhotel.com at 2026-05-30 14:31:46.0",
+            "message": "check smell please they smell the exact same. not fresh. Update-rooms are ready for rent/clean"
+        },
+        {
+            "title": "117 & 103-HK UPDATE",
+            "timestamp": "2DJDW9@bwhhotel.com at 2026-05-30 12:49:08.0",
+            "message": "THEY HAVE PRIVACY SIGNS ON DOOR. SO NO HK WAS DONE. ALSO WE TRIED TO CALL THEM AND NO ANSWER. IF THEY NEED HK PLEASE ASK THEM TO NOT HAVE SIGN OUT."
         },
         {
             "title": "No Show",
-            "timestamp": "324CK2@bwhhotel.com at 2026-05-29 06:21:42.0",
-            "message": " Silva, Orlando"
+            "timestamp": "324CK2@bwhhotel.com at 2026-05-30 05:42:19.0",
+            "message": "Carolyn Gray  1st Night No show room 121 (1/2)"
         },
         {
-            "title": "113 & 120",
-            "timestamp": "324CK2@bwhhotel.com at 2026-05-29 06:19:59.0",
-            "message": "check smell please they smell the exact same. not fresh"
-        },
-        {
-            "title": "112-CASTILLO",
-            "timestamp": "324CK2@bwhhotel.com at 2026-05-29 06:19:40.0",
-            "message": "2 BOXES OF MEAT IN FRIDGE FOR GUEST, WILL RETREIVE AT CHECK OUT. C/O - 05/29"
+            "title": "#117 & 103",
+            "timestamp": "324CK2@bwhhotel.com at 2026-05-30 05:39:37.0",
+            "message": "Staying for 28 days, Need HK every Sat 05/30, 06/06, 06/13, 06/20. Note on HK Paper too\r\nLONG STAY - KEEP THIS NOTE ON TOP EVERYDAY - BABUL"
         }
     ]
 ]

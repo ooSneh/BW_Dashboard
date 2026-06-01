@@ -83,9 +83,19 @@ def main():
                             "mobile": False,
                         },
                     )
-                    driver.get(screenshot_url)
+                    print("Opening Site to take screenshot")
+                    try:
+                        driver.get(screenshot_url)
+                    except:
+                        print(
+                            "Screenshot Site took too long to load, UNREACHABLE. Failed to take screenshot"
+                        )
+
                     time.sleep(2)
                     driver.save_screenshot(screenshot_ouput)
+                    print(
+                        "Screenshot taken (if preceded by failed message, screenshot was not successfull)"
+                    )
 
                 except Exception as e:
                     print(f"An error occurred: {e}")
@@ -118,15 +128,14 @@ def main():
             )
             print("Relogging in to fetch data")
             loggedout = True
-            
+
         except KeyError as ke:
-            print(f"Error: {ie}")
+            print(f"Error: {ke}")
             print(
                 "INCOMPLETE DATA. Failed to import old data to preserve difference data EEPROM, continuing as a fresh installation with no old data"
             )
             print("Relogging in to fetch data")
             loggedout = True
-
 
         except Exception as ex:
             print(f"Error: {ex}")
@@ -172,34 +181,34 @@ def login(cookie_file, credentials, login_url):
     driver = run_headless("--window-size=1920,1080")
     driver.get(login_url)
     print("Opened new chrome window")
-    time.sleep(2)
+    time.sleep(5)
 
     cookie_accept = driver.find_element(By.CLASS_NAME, "prominent-btn")
     cookie_accept.click()
     print("Clicked Continue")
-    time.sleep(2)
+    time.sleep(5)
 
     user_field = driver.find_element(By.ID, "input28")
     print("Selected username field")
     user_field.send_keys(credentials[0])
     print("Entered username")
-    time.sleep(2)
+    time.sleep(5)
 
     user_btn = driver.find_element(By.CLASS_NAME, "button-primary")
     user_btn.click()
     print("Hit Next")
-    time.sleep(2)
+    time.sleep(5)
 
     pass_field = driver.find_element(By.ID, "input62")
     print("Selected password field")
     pass_field.send_keys(credentials[1])
     print("Entered password")
-    time.sleep(2)
+    time.sleep(5)
 
     pass_btn = driver.find_element(By.CLASS_NAME, "button-primary")
     pass_btn.click()
     print("Hit Verify")
-    time.sleep(5)
+    time.sleep(10)
 
     cookies_json = driver.get_cookies()
     print("Grabbed Cookies")
@@ -411,21 +420,14 @@ def save_old_price(df):
         with open(data_output) as f:
             old_json_data = json.load(f)
 
-        # Calculate the old price from old data and reinsert it into global old_price to preserve difference data
+        # Check old price vs Fresh pulled data, if prices are same then pass through difference data, else recalculate difference new price - old price
         for room_type in old_json_data[1]:
+            old_price.append(room_type["old price"])
+            diff.append(room_type["diff"])
             # print(room_type)
-            temp_old_price = float(room_type["old price"][2:])
-            temp_diff = float(room_type["diff"][1:])
-            real_old_price = format_currency(temp_old_price - temp_diff)
-            # print(real_old_price)
-            old_price.append(real_old_price)
-
-        diff = [
-            format_currency(float(p[2:]) - float(old_price[j][2:]))
-            for j, p in enumerate(df["price"].tolist())
-        ]
-
-        df["old price"] = old_price
+            # # print(real_old_price)
+        # print(old_price, diff)
+        # df["old price"] = old_price
 
     elif old_price == []:
         old_price = df["price"].tolist()
@@ -433,7 +435,7 @@ def save_old_price(df):
             format_currency(float(p[2:]) - float(old_price[j][2:]))
             for j, p in enumerate(df["price"].tolist())
         ]
-        df["old price"] = old_price
+        # df["old price"] = old_price
 
     if old_price != df["price"].tolist():
         # print("new price", df["price"].tolist())

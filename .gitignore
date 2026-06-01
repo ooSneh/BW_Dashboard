@@ -3,7 +3,6 @@ secrets/
 sandbox/
 *.env
 
-
 # Python
 __pycache__/
 *.pyc
@@ -16,3 +15,4 @@ public/data.json
 .DS_Store
 .vscode/
 Aayush_Dashboard.code-workspace
+docker-compose.yml
