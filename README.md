@@ -1,2 +1,2 @@
 # Dashboard
-Creates a dashboard taken from 
+Creates a dashboard that scrapes data from a hotel property management system
