@@ -1,0 +1,78 @@
+[
+    [
+        {
+            "label": "Remaining Arrivals",
+            "value": 2.0
+        },
+        {
+            "label": "Remaining Departures",
+            "value": 0.0
+        },
+        {
+            "label": "Currently In House",
+            "value": 14.0
+        },
+        {
+            "label": "Stay Overs",
+            "value": 10.0
+        },
+        {
+            "label": "Arriving Tomorrow",
+            "value": 0.0
+        },
+        {
+            "label": "Departed Guests",
+            "value": 8.0
+        },
+        {
+            "label": "Vacant Dirty",
+            "value": 4.0
+        },
+        {
+            "label": "Vacant Clean",
+            "value": 30.0
+        },
+        {
+            "label": "Out of Order",
+            "value": 2.0
+        }
+    ],
+    [
+        {
+            "count": 3,
+            "room": "KNS",
+            "price": "$ 79.00",
+            "old price": "$ 79.00",
+            "diff": "$ 0.00"
+        },
+        {
+            "count": 27,
+            "room": "QQNS",
+            "price": "$ 89.00",
+            "old price": "$ 89.00",
+            "diff": "$ 0.00"
+        },
+        {
+            "count": 1,
+            "room": "KHC",
+            "price": "$ 79.00",
+            "old price": "$ 79.00",
+            "diff": "$ 0.00"
+        },
+        {
+            "count": 1,
+            "room": "QQHC",
+            "price": "$ 89.00",
+            "old price": "$ 89.00",
+            "diff": "$ 0.00"
+        }
+    ],
+    [],
+    [
+        {
+            "title": "CASH COUNT",
+            "timestamp": "F862E4@bwhhotel.com at 2026-10-27 09:31:14.0",
+            "message": "COUNT THE CASH AT THE BEGINNING AND END OF YOUR SHIFT-Aayush"
+        }
+    ]
+]

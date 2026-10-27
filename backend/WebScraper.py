@@ -188,24 +188,24 @@ def login(cookie_file, credentials, login_url):
     print("Clicked Continue")
     time.sleep(5)
 
-    user_field = driver.find_element(By.ID, "input28")
+    user_field = driver.find_element(By.ID, "identifier")
     print("Selected username field")
     user_field.send_keys(credentials[0])
     print("Entered username")
     time.sleep(5)
 
-    user_btn = driver.find_element(By.CLASS_NAME, "button-primary")
+    user_btn = driver.find_element(By.CLASS_NAME, "MuiButton-primary")
     user_btn.click()
     print("Hit Next")
     time.sleep(5)
 
-    pass_field = driver.find_element(By.ID, "input62")
+    pass_field = driver.find_element(By.ID, "credentials.passcode")
     print("Selected password field")
     pass_field.send_keys(credentials[1])
     print("Entered password")
     time.sleep(5)
 
-    pass_btn = driver.find_element(By.CLASS_NAME, "button-primary")
+    pass_btn = driver.find_element(By.CLASS_NAME, "MuiButton-primary")
     pass_btn.click()
     print("Hit Verify")
     time.sleep(10)
